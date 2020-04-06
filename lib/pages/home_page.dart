@@ -17,7 +17,9 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
     return Observer(builder: (_) {
       return Scaffold(
         backgroundColor: Colors.white,
-        body: _buildBody(),
+        body: (this.controller.mundo != null || this.controller.pais != null)
+            ? _buildBody()
+            : Center(child:CircularProgressIndicator()),
         bottomNavigationBar: _buildBottomBar(),
       );
     });
@@ -39,7 +41,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
           Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: Text(
-              "Dados atualizados em ",
+              "Dados atualizados em ${controller.mundo.ultimaAtualizacao.day}/0${controller.mundo.ultimaAtualizacao.month} às ${controller.mundo.ultimaAtualizacao.hour}:${controller.mundo.ultimaAtualizacao.minute}",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
             ),
           ),
@@ -90,12 +92,14 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
               ],
             ),
           ),
-          _buildRow(Colors.brown,Icons.person_outline,"Total de Infectados", controller.mundo.casos.toString()),
+          _buildRow(Colors.brown, Icons.person_outline, "Total de Infectados",
+              controller.mundo.casos.toString()),
           const SizedBox(height: 16.0),
-          _buildRow(Colors.red,Icons.person_pin,"Mortes", controller.mundo.mortes.toString()),
+          _buildRow(Colors.red, Icons.person_pin, "Mortes",
+              controller.mundo.mortes.toString()),
           const SizedBox(height: 16.0),
-          _buildRow(Colors.green,Icons.person_add,"Recuperados", controller.mundo.recuperados.toString()),
-          
+          _buildRow(Colors.green, Icons.person_add, "Recuperados",
+              controller.mundo.recuperados.toString()),
         ],
       ),
     );
@@ -106,38 +110,40 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildHeader(controller.pais.nome, isPais: true, url: controller.pais.urlBandeira),
+          _buildHeader(controller.pais.nome,
+              isPais: true, url: controller.pais.urlBandeira),
           const SizedBox(height: 20.0),
-        
-          _buildRow(Colors.brown,Icons.person_outline,"Total de Infectados", controller.pais.casos.toString()),
+          _buildRow(Colors.brown, Icons.person_outline, "Total de Infectados",
+              controller.pais.casos.toString()),
           const SizedBox(height: 16.0),
-          _buildRow(Colors.red,Icons.person_pin,"Mortes", controller.pais.mortes.toString()),
+          _buildRow(Colors.red, Icons.person_pin, "Mortes",
+              controller.pais.mortes.toString()),
           const SizedBox(height: 16.0),
-          _buildRow(Colors.green,Icons.person_add,"Recuperados", controller.pais.recuperados.toString()),
-          
+          _buildRow(Colors.green, Icons.person_add, "Recuperados",
+              controller.pais.recuperados.toString()),
         ],
       ),
     );
   }
 
-
   Padding _buildRow(Color color, IconData icon, String titulo, String data) {
     return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Row(children: <Widget>[
-              Expanded(
-                flex: 3,
-                child: _buildTile(
-                  color: color,
-                  icon: icon,
-                  title:titulo,
-                  data: data.toString(),
-                ),
-              )
-            ]));
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Row(children: <Widget>[
+          Expanded(
+            flex: 3,
+            child: _buildTile(
+              color: color,
+              icon: icon,
+              title: titulo,
+              data: data.toString(),
+            ),
+          )
+        ]));
   }
 
-  Container _buildHeader(String titulo,{bool isPais = false, String url = ''} ) {
+  Container _buildHeader(String titulo,
+      {bool isPais = false, String url = ''}) {
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 32.0),
       decoration: BoxDecoration(
@@ -148,17 +154,24 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         color: Colors.blue,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ListTile(
             title: Text(
-            titulo,
+              titulo,
               style: whiteText.copyWith(
                   fontWeight: FontWeight.bold, fontSize: 20.0),
             ),
           ),
           const SizedBox(height: 5.0),
-          isPais ? Center(child: Image.network(url,width: 50,)) : SizedBox()
+          isPais
+              ? Center(
+                  child: Image.network(
+                  url,
+                  width: 150,
+                ))
+              : SizedBox()
         ],
       ),
     );
