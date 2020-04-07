@@ -26,6 +26,26 @@ mixin _$HomeController on _HomeControllerBase, Store {
     }, _$currentIndexAtom, name: '${_$currentIndexAtom.name}_set');
   }
 
+  final _$textFieldControllerAtom =
+      Atom(name: '_HomeControllerBase.textFieldController');
+
+  @override
+  TextEditingController get textFieldController {
+    _$textFieldControllerAtom.context
+        .enforceReadPolicy(_$textFieldControllerAtom);
+    _$textFieldControllerAtom.reportObserved();
+    return super.textFieldController;
+  }
+
+  @override
+  set textFieldController(TextEditingController value) {
+    _$textFieldControllerAtom.context.conditionallyRunInAction(() {
+      super.textFieldController = value;
+      _$textFieldControllerAtom.reportChanged();
+    }, _$textFieldControllerAtom,
+        name: '${_$textFieldControllerAtom.name}_set');
+  }
+
   final _$mundoAtom = Atom(name: '_HomeControllerBase.mundo');
 
   @override
@@ -91,7 +111,7 @@ mixin _$HomeController on _HomeControllerBase, Store {
   @override
   String toString() {
     final string =
-        'currentIndex: ${currentIndex.toString()},mundo: ${mundo.toString()},pais: ${pais.toString()}';
+        'currentIndex: ${currentIndex.toString()},textFieldController: ${textFieldController.toString()},mundo: ${mundo.toString()},pais: ${pais.toString()}';
     return '{$string}';
   }
 }

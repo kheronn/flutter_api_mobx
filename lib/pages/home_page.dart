@@ -15,14 +15,20 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
-      return Scaffold(
+      if (this.controller.pais == null) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      else
+      {return Scaffold(
         backgroundColor: Colors.white,
         body: (this.controller.mundo != null || this.controller.pais != null)
             ? _buildBody()
-            : Center(child:CircularProgressIndicator()),
+            : Center(child: CircularProgressIndicator()),
         bottomNavigationBar: _buildBottomBar(),
       );
-    });
+    }});
   }
 
   Widget _buildBody() {
@@ -166,11 +172,14 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
           ),
           const SizedBox(height: 5.0),
           isPais
-              ? Center(
-                  child: Image.network(
-                  url,
-                  width: 150,
-                ))
+              ? GestureDetector(
+                  onTap: () => _displayDialog(context),
+                  child: Center(
+                      child: Image.network(
+                    url,
+                    width: 150,
+                  )),
+                )
               : SizedBox()
         ],
       ),
@@ -227,5 +236,40 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         ),
       ],
     );
+  }
+
+  _displayDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Situação de outro País'),
+            content: TextField(
+              controller: controller.textFieldController,
+              decoration: InputDecoration(hintText: "INFORME O PAÍS:"),
+            ),
+            actions: <Widget>[
+              RaisedButton(
+                onPressed: () {
+                  this.controller.getInfoPais(
+                      nomePais:
+                          this.controller.textFieldController.text.toString());
+                  Modular.to.pop();
+                },
+                child: Text(
+                  "OK",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: const Color(0xFF1BC0C5),
+              ),
+              new FlatButton(
+                child: new Text('CANCELAR'),
+                onPressed: () {
+                  Modular.to.pop();
+                },
+              )
+            ],
+          );
+        });
   }
 }
