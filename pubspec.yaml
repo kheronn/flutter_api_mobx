@@ -21,7 +21,6 @@ dependencies:
   flutter_modular: ^1.0.0
   flutter_mobx: ^1.0.1
   mobx: ^1.0.2+1
-  flutter_svg: ^0.17.3+1
 
   flutter:
     sdk: flutter

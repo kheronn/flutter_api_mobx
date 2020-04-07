@@ -7,22 +7,20 @@ class CovidApiRepository {
   String url = "https://corona.lmao.ninja";
 
   Future<Mundo> getMundo() async {
-    try {
-      Response response = await _dio.get('$url/all');
+    Response response = await _dio.get('$url/all');
+    if (response.statusCode != 200) {
+      throw Exception();
+    } else {
       return Mundo.fromJson(response.data);
-    } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
     }
-    return null;
   }
 
   Future<Pais> getPais({String pais}) async {
-    try {
-      Response response = await _dio.get('$url/countries/$pais');
+    Response response = await _dio.get('$url/countries/$pais');
+    if (response.statusCode != 200) {
+      throw Exception();
+    } else {
       return Pais.fromJson(response.data);
-    } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
     }
-    return null;
   }
 }

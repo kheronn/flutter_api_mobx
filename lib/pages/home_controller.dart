@@ -35,8 +35,8 @@ abstract class _HomeControllerBase with Store {
 
   @action
   getInfoPais({String nomePais = 'brazil'}) async {
-    print(nomePais);
-   try{ pais = await api.getPais(pais: nomePais);}
+    
+   try{ pais =  await api.getPais(pais: nomePais);}
    catch(exception){
      return Container();
    }
