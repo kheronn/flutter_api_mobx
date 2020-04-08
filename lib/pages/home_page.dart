@@ -15,20 +15,14 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
-      if (this.controller.pais == null) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-      else
-      {return Scaffold(
+      return Scaffold(
         backgroundColor: Colors.white,
-        body: (this.controller.mundo != null || this.controller.pais != null)
+        body: (this.controller.mundo != null && this.controller.pais != null)
             ? _buildBody()
             : Center(child: CircularProgressIndicator()),
         bottomNavigationBar: _buildBottomBar(),
       );
-    }});
+    });
   }
 
   Widget _buildBody() {
