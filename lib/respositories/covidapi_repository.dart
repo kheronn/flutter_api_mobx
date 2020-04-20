@@ -4,7 +4,7 @@ import 'package:flutter_covid19/models/pais_model.dart';
 
 class CovidApiRepository {
   final Dio _dio = Dio();
-  String url = "https://corona.lmao.ninja";
+  String url = "https://corona.lmao.ninja/v2";
 
   Future<Mundo> getMundo() async {
     Response response = await _dio.get('$url/all');
