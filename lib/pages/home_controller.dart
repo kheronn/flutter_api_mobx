@@ -18,7 +18,7 @@ abstract class _HomeControllerBase with Store {
 
   @observable
   int currentIndex = 0;
-  
+
   @observable
   TextEditingController textFieldController = TextEditingController();
 
@@ -35,13 +35,12 @@ abstract class _HomeControllerBase with Store {
 
   @action
   getInfoPais({String nomePais = 'brazil'}) async {
-    
-   try{ pais =  await api.getPais(pais: nomePais);}
-   catch(exception){
-     return Container();
-   }
+    try {
+      pais = await api.getPais(pais: nomePais);
+    } catch (exception) {
+      return Container();
+    }
   }
-
 
   @action
   changePage(int index) {
