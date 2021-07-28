@@ -1,3 +1,4 @@
+import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -42,7 +43,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
             padding: const EdgeInsets.only(left: 16.0),
             child: Text(
               "Dados atualizados em ${controller.mundo.ultimaAtualizacao.day}/0${controller.mundo.ultimaAtualizacao.month} às ${controller.mundo.ultimaAtualizacao.hour}:${controller.mundo.ultimaAtualizacao.minute}",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
             ),
           ),
           Card(
@@ -92,14 +93,26 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
               ],
             ),
           ),
-          _buildRow(Colors.brown, Icons.person_outline, "Total de Infectados",
-              controller.mundo.casos.toString()),
+          _buildRow(
+            Colors.brown,
+            Icons.person_outline,
+            "Total de Infectados",
+            controller.mundo.casos.toString(),
+          ),
           const SizedBox(height: 16.0),
-          _buildRow(Colors.red, Icons.person_pin, "Mortes",
-              controller.mundo.mortes.toString()),
+          _buildRow(
+            Colors.red,
+            Icons.person_pin,
+            "Mortes",
+            controller.mundo.mortes.toString(),
+          ),
           const SizedBox(height: 16.0),
-          _buildRow(Colors.green, Icons.person_add, "Recuperados",
-              controller.mundo.recuperados.toString()),
+          _buildRow(
+            Colors.green,
+            Icons.person_add,
+            "Recuperados",
+            controller.mundo.recuperados.toString(),
+          ),
         ],
       ),
     );
@@ -126,7 +139,12 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
     );
   }
 
-  Padding _buildRow(Color color, IconData icon, String titulo, String data) {
+  Padding _buildRow(
+    Color color,
+    IconData icon,
+    String titulo,
+    String data,
+  ) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Row(children: <Widget>[
@@ -142,8 +160,11 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         ]));
   }
 
-  Container _buildHeader(String titulo,
-      {bool isPais = false, String url = ''}) {
+  Container _buildHeader(
+    String titulo, {
+    bool isPais = false,
+    String url = '',
+  }) {
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 32.0),
       decoration: BoxDecoration(
@@ -180,8 +201,12 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
     );
   }
 
-  Container _buildTile(
-      {Color color, IconData icon, String title, String data}) {
+  Container _buildTile({
+    Color color,
+    IconData icon,
+    String title,
+    String data,
+  }) {
     return Container(
       padding: const EdgeInsets.all(8.0),
       height: 100.0,
@@ -200,12 +225,15 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
             ),
             title: Text(
               title,
-              style: whiteText.copyWith(fontWeight: FontWeight.bold),
+              style: whiteText.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 12.0,
+              ),
             ),
             trailing: Text(
               data,
               style: whiteText.copyWith(
-                  fontWeight: FontWeight.w300, fontSize: 30.0),
+                  fontWeight: FontWeight.w300, fontSize: 25.0),
             ),
           ),
         ],
@@ -222,11 +250,11 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.group_work),
-          title: Text("Mundo"),
+          label: "Mundo",
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.flag),
-          title: Text("Pais"),
+          label: 'País',
         ),
       ],
     );
@@ -234,36 +262,40 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
 
   _displayDialog(BuildContext context) async {
     return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Situação de outro País'),
-            content: TextField(
-              controller: controller.textFieldController,
-              decoration: InputDecoration(hintText: "INFORME O PAÍS:"),
-            ),
-            actions: <Widget>[
-              RaisedButton(
-                onPressed: () {
-                  this.controller.getInfoPais(
-                      nomePais:
-                          this.controller.textFieldController.text.toString());
-                  Modular.to.pop();
-                },
-                child: Text(
-                  "OK",
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: const Color(0xFF1BC0C5),
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Situação de outro País'),
+          content: TextField(
+            controller: controller.textFieldController,
+            decoration: InputDecoration(hintText: "INFORME O PAÍS:"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                this.controller.getInfoPais(
+                    nomePais:
+                        this.controller.textFieldController.text.toString());
+                Modular.to.pop();
+              },
+              child: Text(
+                "OK",
+                style: TextStyle(color: Colors.white),
               ),
-              new FlatButton(
-                child: new Text('CANCELAR'),
-                onPressed: () {
-                  Modular.to.pop();
-                },
-              )
-            ],
-          );
-        });
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Color(0xFF1BC0C5)),
+              ),
+            ),
+            TextButton(
+              child: new Text('CANCELAR'),
+              onPressed: () {
+                Modular.to.pop();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 }
